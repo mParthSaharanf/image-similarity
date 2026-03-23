@@ -7,5 +7,10 @@ The pipeline is built using PyTorch and FAISS, consisting of four main stages:
 2. **Contrastive Learning**: Generates anchor, positive, and negative image triplets to train the network on subtle artistic similarities (using easy and hard negative mining).
 3. **Deep Feature Extraction**: Utilizes a frozen **DINOv2** (`vitb14`) backbone attached to a custom trainable projection head, optimized using `TripletMarginLoss`.
 4. **Vector Search**: Embeddings are L2-normalized and indexed using **FAISS** (Inner Product), allowing for blazingly fast cosine-similarity visual searches.
+## Results
+<img src="results/result1.jpeg" alt="Search Result" width="800">
+<img src="results/result2.jpeg" alt="Search Result" width="800">
+<img src="results/result3.jpeg" alt="Search Result" width="800">
+<img src="results/result4.jpeg" alt="Search Result" width="800">
+<img src="results/result5.jpeg" alt="Search Result" width="800">
 
-<img src="results/result1.jpeg" alt="Search Result" width="400">
