@@ -10,14 +10,13 @@ The pipeline is built using PyTorch and FAISS, consisting of four main stages:
 ## Dataset Generation
 The dataset is derived from the National Gallery of Art (NGA) Open Data collection. The goal was to create a model capable of distinguishing fine-grained artistic features by focusing on portraits as a primary class, altough this project works good for non portraits too!
 1. Data Mining & Filtering
+    -Using scripts/new_download.py, the following steps were taken:
 
-Using scripts/new_download.py, the following steps were taken:
+    *Metadata Integration: Combined objects.csv, published_images.csv, and objects_terms.csv to map artwork metadata to high-resolution IIIF image URLs.
 
-Metadata Integration: Combined objects.csv, published_images.csv, and objects_terms.csv to map artwork metadata to high-resolution IIIF image URLs.
+    +Classification: Artworks were split into two groups: Portraits (identified via "portrait" terms in metadata) and Non-Portraits (landscapes, still         life, etc.).
 
-Classification: Artworks were split into two groups: Portraits (identified via "portrait" terms in metadata) and Non-Portraits (landscapes, still life, etc.).
-
-Balancing: To prevent model bias, non-portraits were downsampled to a maximum of 1,500 images per classification (e.g., "Painting", "Print").
+    Balancing: To prevent model bias, non-portraits were downsampled to a maximum of 1,500 images per classification (e.g., "Painting", "Print").
 2. Triplet Strategy
 
 To train using Triplet Margin Loss, 100,000 unique triplets were generated in src/data/triplets_csv.py using the following selection logic:
