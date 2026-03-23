@@ -5,35 +5,25 @@ from PIL import Image
 from tqdm import tqdm
 import torchvision.transforms as transforms
 
-# -------------------------
-# CONFIG
-# -------------------------
-IMAGE_FOLDER = "./nga_images"     # folder with all images
-MODEL_PATH = "embedding_model.pth"         # your trained model
-OUTPUT_PATH = "embeddings.npy"   # where to save embeddings
+IMAGE_FOLDER = "./nga_images"    
+MODEL_PATH = "embedding_model.pth"       
+OUTPUT_PATH = "embeddings.npy"   
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 
-# -------------------------
-# TRANSFORMS (same as training)
-# -------------------------
+
 transform = transforms.Compose([
     transforms.Resize((224, 224)),
     transforms.ToTensor(),
 ])
 
-# -------------------------
-# LOAD MODEL
-# -------------------------
-from model import EmbeddingModel   # <-- change if your file name differs
+
+from model import EmbeddingModel  
 
 model = EmbeddingModel()
 model.load_state_dict(torch.load(MODEL_PATH, map_location=DEVICE))
 model.to(DEVICE)
 model.eval()
 
-# -------------------------
-# LOAD IMAGES
-# -------------------------
 image_paths = []
 
 for root, dirs, files in os.walk(IMAGE_FOLDER):
@@ -43,9 +33,6 @@ for root, dirs, files in os.walk(IMAGE_FOLDER):
 
 print(f"Total images: {len(image_paths)}")
 
-# -------------------------
-# GENERATE EMBEDDINGS
-# -------------------------
 embeddings = []
 paths = []
 
@@ -55,7 +42,6 @@ with torch.no_grad():
             img = Image.open(path).convert("RGB")
             img = transform(img).unsqueeze(0).to(DEVICE)
 
-            # 🔥 IMPORTANT: embedding extraction
             embedding = model(img)
 
             embedding = embedding.cpu().numpy().flatten()
@@ -66,9 +52,7 @@ with torch.no_grad():
         except Exception as e:
             print(f"Skipping {path}: {e}")
 
-# -------------------------
-# SAVE
-# -------------------------
+
 embeddings = np.array(embeddings)
 
 np.save(OUTPUT_PATH, {
