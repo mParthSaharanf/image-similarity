@@ -4,10 +4,6 @@ import requests
 from tqdm import tqdm
 from concurrent.futures import ThreadPoolExecutor
 
-# --------------------------------------------
-# CONFIG
-# --------------------------------------------
-
 DATA_DIR = "./nga_metadata"
 IMAGE_DIR = "./nga_images"
 OUTPUT_CSV = "final_dataset.csv"
@@ -19,10 +15,6 @@ os.makedirs(DATA_DIR, exist_ok=True)
 os.makedirs(IMAGE_DIR, exist_ok=True)
 
 BASE_URL = "https://raw.githubusercontent.com/NationalGalleryOfArt/opendata/main/data/"
-
-# --------------------------------------------
-# DOWNLOAD CSVs
-# --------------------------------------------
 
 def download_csv(filename):
     path = os.path.join(DATA_DIR, filename)
@@ -43,28 +35,16 @@ objects_path = download_csv("objects.csv")
 images_path = download_csv("published_images.csv")
 terms_path = download_csv("objects_terms.csv")
 
-# --------------------------------------------
-# LOAD DATA
-# --------------------------------------------
-
 print("Loading data...")
 
 df_objects = pd.read_csv(objects_path)
 df_images = pd.read_csv(images_path)
 df_terms = pd.read_csv(terms_path)
 
-# --------------------------------------------
-# FILTER VALID IMAGES
-# --------------------------------------------
-
 df_images = df_images[
     (df_images["viewtype"] == "primary") &
     (df_images["iiifurl"].notna())
 ]
-
-# --------------------------------------------
-# MERGE OBJECTS + IMAGES
-# --------------------------------------------
 
 df = df_objects.merge(
     df_images,
@@ -77,17 +57,9 @@ df = df.drop_duplicates(subset="objectid")
 
 print("Total usable images:", len(df))
 
-# --------------------------------------------
-# GET PORTRAIT IDS
-# --------------------------------------------
-
 portrait_ids = df_terms[
     df_terms["term"].str.contains("portrait", case=False, na=False)
 ]["objectid"].unique()
-
-# --------------------------------------------
-# SPLIT DATA
-# --------------------------------------------
 
 df["is_portrait"] = df["objectid"].isin(portrait_ids)
 
@@ -96,10 +68,6 @@ non_portraits = df[df["is_portrait"] == False]
 
 print("Portraits:", len(portraits))
 print("Non-portraits:", len(non_portraits))
-
-# --------------------------------------------
-# BALANCED NON-PORTRAIT SAMPLING
-# --------------------------------------------
 
 print("Sampling balanced non-portraits...")
 
@@ -114,16 +82,11 @@ non_portraits_balanced = pd.concat(samples)
 
 print("Balanced non-portraits:", len(non_portraits_balanced))
 
-# --------------------------------------------
-# FINAL DATASET
-# --------------------------------------------
-
 final_df = pd.concat([portraits, non_portraits_balanced])
 final_df = final_df.reset_index(drop=True)
 
 print("Final dataset size:", len(final_df))
 
-# save metadata
 final_df[[
     "objectid",
     "title",
@@ -133,10 +96,6 @@ final_df[[
 ]].to_csv(OUTPUT_CSV, index=False)
 
 print("Metadata saved to", OUTPUT_CSV)
-
-# --------------------------------------------
-# DOWNLOAD IMAGES
-# --------------------------------------------
 
 def download_image(row):
 
