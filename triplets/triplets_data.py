@@ -4,8 +4,8 @@ from PIL import Image
 from torch.utils.data import Dataset
 import torchvision.transforms as transforms
 
-IMAGE_DIR = "./nga_images"
-TRIPLETS_CSV = "triplets.csv"
+IMAGE_DIR = "data/nga_images"
+TRIPLETS_CSV = "triplets/triplets.csv"
 
 transform = transforms.Compose([
     transforms.Resize((224, 224)),

@@ -5,7 +5,7 @@ from PIL import Image
 from tqdm import tqdm
 import torchvision.transforms as transforms
 
-IMAGE_FOLDER = "./nga_images"    
+IMAGE_FOLDER = "data/nga_images"    
 MODEL_PATH = "embedding_model.pth"       
 OUTPUT_PATH = "embeddings.npy"   
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"

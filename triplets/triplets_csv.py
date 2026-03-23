@@ -2,8 +2,8 @@ import pandas as pd
 import random
 from tqdm import tqdm
 
-INPUT_CSV = "final_dataset.csv"
-OUTPUT_CSV = "triplets.csv"
+INPUT_CSV = "data/final_dataset.csv"
+OUTPUT_CSV = "triplets/triplets.csv"
 
 MAX_TRIPLETS = 100000  
 

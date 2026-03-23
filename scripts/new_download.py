@@ -4,9 +4,9 @@ import requests
 from tqdm import tqdm
 from concurrent.futures import ThreadPoolExecutor
 
-DATA_DIR = "./nga_metadata"
-IMAGE_DIR = "./nga_images"
-OUTPUT_CSV = "final_dataset.csv"
+DATA_DIR = "data/nga_metadata"
+IMAGE_DIR = "data/nga_images"
+OUTPUT_CSV = "data/final_dataset.csv"
 
 MAX_WORKERS = 16
 IMAGE_SIZE = "800,"
