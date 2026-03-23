@@ -2,22 +2,13 @@ import pandas as pd
 import random
 from tqdm import tqdm
 
-# --------------------------------------------
-# CONFIG
-# --------------------------------------------
-
 INPUT_CSV = "final_dataset.csv"
 OUTPUT_CSV = "triplets.csv"
 
-MAX_TRIPLETS = 100000   # you can change
-
-# --------------------------------------------
-# LOAD DATA
-# --------------------------------------------
+MAX_TRIPLETS = 100000  
 
 df = pd.read_csv(INPUT_CSV)
 
-# split data
 portraits = df[df["is_portrait"] == True]
 non_portraits = df[df["is_portrait"] == False]
 
@@ -26,10 +17,6 @@ non_portrait_ids = non_portraits["objectid"].tolist()
 
 print("Portraits:", len(portrait_ids))
 print("Non-portraits:", len(non_portrait_ids))
-
-# --------------------------------------------
-# GENERATE TRIPLETS
-# --------------------------------------------
 
 triplets = []
 
@@ -52,10 +39,6 @@ for _ in tqdm(range(MAX_TRIPLETS)):
             negative = random.choice(portrait_ids)
 
     triplets.append((anchor, positive, negative))
-
-# --------------------------------------------
-# SAVE
-# --------------------------------------------
 
 triplet_df = pd.DataFrame(triplets, columns=["anchor", "positive", "negative"])
 triplet_df.to_csv(OUTPUT_CSV, index=False)

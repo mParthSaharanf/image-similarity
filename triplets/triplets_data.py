@@ -4,25 +4,13 @@ from PIL import Image
 from torch.utils.data import Dataset
 import torchvision.transforms as transforms
 
-# --------------------------------------------
-# CONFIG
-# --------------------------------------------
-
 IMAGE_DIR = "./nga_images"
 TRIPLETS_CSV = "triplets.csv"
-
-# --------------------------------------------
-# TRANSFORMS
-# --------------------------------------------
 
 transform = transforms.Compose([
     transforms.Resize((224, 224)),
     transforms.ToTensor(),
 ])
-
-# --------------------------------------------
-# DATASET CLASS
-# --------------------------------------------
 
 class TripletDataset(Dataset):
 
@@ -40,7 +28,6 @@ class TripletDataset(Dataset):
         try:
             img = Image.open(path).convert("RGB")
         except:
-            # fallback (rare)
             img = Image.new("RGB", (224, 224))
 
         if self.transform:
