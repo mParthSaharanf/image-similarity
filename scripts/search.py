@@ -6,41 +6,21 @@ from PIL import Image
 import matplotlib.pyplot as plt
 
 from model import EmbeddingModel
-from triplets.triplets_data import transform   # ✅ SAME AS TRAINING
-
-# -----------------------------------
-# Paths
-# -----------------------------------
+from triplets.triplets_data import transform   
 
 INDEX_FILE = "./faiss/image_index.faiss"
 PATHS_FILE = "./faiss/image_paths.pkl"
 
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-# -----------------------------------
-# Load FAISS index
-# -----------------------------------
-
 index = faiss.read_index(INDEX_FILE)
-
-# -----------------------------------
-# Load paths
-# -----------------------------------
 
 with open(PATHS_FILE, "rb") as f:
     paths = pickle.load(f)
 
-# -----------------------------------
-# Load model (IMPORTANT)
-# -----------------------------------
-
 model = EmbeddingModel().to(DEVICE)
 model.load_state_dict(torch.load("embedding_model.pth", map_location=DEVICE))
 model.eval()
-
-# -----------------------------------
-# Search function
-# -----------------------------------
 
 def search(query_image, top_k=5):
 
@@ -58,21 +38,14 @@ def search(query_image, top_k=5):
 
     return distances[0], indices[0]
 
-# -----------------------------------
-# Visualization
-# -----------------------------------
-
 def show_results(query_image, distances, indices):
 
     plt.figure(figsize=(15,4))
-
-    # query image
     plt.subplot(1, len(indices)+1, 1)
     plt.imshow(Image.open(query_image))
     plt.title("Query")
     plt.axis("off")
 
-    # results
     for i, idx in enumerate(indices):
 
         img_path = paths[idx]
