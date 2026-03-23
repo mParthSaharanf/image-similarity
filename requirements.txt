@@ -1,0 +1,9 @@
+torch
+torchvision
+pandas
+Pillow
+tqdm
+numpy
+faiss-cpu
+matplotlib
+requests
