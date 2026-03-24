@@ -13,7 +13,7 @@ The dataset is derived from the National Gallery of Art (NGA) Open Data collecti
 1. Data Mining & Filtering
 Using scripts/new_download.py, the following steps were taken:
 * Metadata Integration: Combined objects.csv, published_images.csv, and objects_terms.csv to map artwork metadata to high-resolution IIIF image URLs.
-+ Classification: Artworks were split into two groups: Portraits (identified via "portrait" terms in metadata) and Non-Portraits (landscapes, still         life, etc.).
++ Classification: Artworks were split into two groups: Portraits (identified via "portrait" terms in metadata) and Non-Portraits.
 - Balancing: To prevent model bias, non-portraits were downsampled to a maximum of 1,500 images per classification (e.g., "Painting", "Print").
 
 2. Triplet Strategy
